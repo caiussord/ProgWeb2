@@ -1,5 +1,6 @@
 import express from 'express'
-import conexao from '../infra/conexao.js'
+import conexao from './infra/conexao.js'
+import CursoController from './src/app/contollers/CursoController.js'
 
 const app = express()
 
@@ -22,23 +23,13 @@ app.post('/cursos', (req, res) => {
             res.status(201).json({ 
                 message: 'Curso criado', 
                 id: result.insertId,
-                disciplina: disciplina
+                disciplina: disciplinagi
             })
         }
     })
 })
 
-app.get('/cursos', (req, res) => {
-    const sql = "SELECT * FROM cursos.curso"
-    conexao.query(sql, (error, result) => {
-        if (error) {
-            console.log(error)
-            res.status(500).json({ error: 'Erro interno do servidor' })
-        } else {
-            res.status(200).json(result)
-        }
-    })
-})
+app.get('/cursos', CursoController.index)
 
 app.get('/cursos/:id', (req, res) => {
     const { id } = req.params
